@@ -146,7 +146,7 @@ func (p EKS) Setup(args []string) {
 
 	log.Println("Exporting Worker nodes config-map to the installation folder")
 
-	confmap := exec.Command("terraform", "output", "./inventory/"+Name+"/provisioner/config-map")
+	confmap := exec.Command("terraform", "output", "config-map")
 	confmap.Dir = "./inventory/" + Name + "/provisioner/"
 
 	// open the out file for writing
@@ -262,7 +262,7 @@ func (p EKS) Destroy(args []string) {
 	// }
 }
 
-func NewEKS() cluster.Provisioner {
+func NewEKS() cluster.provisioner {
 	provisioner := new(EKS)
 	return provisioner
 }
