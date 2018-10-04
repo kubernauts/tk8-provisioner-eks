@@ -7,11 +7,12 @@ import (
 	"path/filepath"
 
 	"github.com/alecthomas/template"
+	"github.com/spf13/viper"
 )
 
 var Name string
 
-type AzureConfig struct {
+type EKSConfig struct {
 	ClusterName         string
 	AWSRegion           string
 	NodeInstanceType    string
@@ -19,6 +20,45 @@ type AzureConfig struct {
 	AutoScallingMinSize int
 	AutoScallingMaxSize int
 	KeyPath             string
+}
+type AwsCredentials struct {
+	AwsAccessKeyID   string
+	AwsSecretKey     string
+	AwsAccessSSHKey  string
+	AwsDefaultRegion string
+}
+
+// ReadViperConfigFile is define the config paths and read the configuration file.
+func ReadViperConfigFile(configName string) {
+	viper.SetConfigName(configName)
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("/tk8")
+	viper.ReadInConfig() // Find and read the config file.
+}
+
+// GetCredentials get the aws credentials from the config file.
+func GetEKSConfig() EKSConfig {
+	ReadViperConfigFile("config")
+	return EKSConfig{
+		ClusterName:         viper.GetString("eks.cluster-name"),
+		AWSRegion:           viper.GetString("eks.aws_region"),
+		NodeInstanceType:    viper.GetString("eks.node-instance-type"),
+		DesiredCapacity:     viper.GetInt("eks.desired-capacity"),
+		AutoScallingMinSize: viper.GetInt("eks.autoscalling-min-size"),
+		AutoScallingMaxSize: viper.GetInt("eks.autoscalling-max-size"),
+		KeyPath:             viper.GetString("eks.key-file-path"),
+	}
+}
+
+// GetCredentials get the aws credentials from the config file.
+func GetCredentials() AwsCredentials {
+	ReadViperConfigFile("config")
+	return AwsCredentials{
+		AwsAccessKeyID:   viper.GetString("aws.aws_access_key_id"),
+		AwsSecretKey:     viper.GetString("aws.aws_secret_access_key"),
+		AwsAccessSSHKey:  viper.GetString("aws.aws_ssh_keypair"),
+		AwsDefaultRegion: viper.GetString("aws.aws_default_region"),
+	}
 }
 
 // GetFilePath fetches and returns the current working directory.
