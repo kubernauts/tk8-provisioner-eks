@@ -170,12 +170,11 @@ func (p EKS) Setup(args []string) {
 	// Create Worker nodes usign the Configmap created above
 
 	log.Println("Creating Worker Nodes")
-	WorkerNodeSet := exec.Command("kubectl", "--kubeconfig", "./inventory/"+Name+"/provisioner/kubeconfig", "apply", "-f", "./inventory/"+Name+"/provisioner/config-map-aws-auth.yaml")
-	WorkerNodeSet.Dir = "./"
+	WorkerNodeSet := exec.Command("kubectl", "--kubeconfig", "kubeconfig", "apply", "-f", "config-map-aws-auth.yaml")
+	WorkerNodeSet.Dir = "./inventory/" + Name + "/provisioner/"
 
 	workerNodeOut, err := WorkerNodeSet.Output()
 	if err != nil {
-		fmt.Println(err)
 		log.Fatal(err)
 	}
 	fmt.Printf(string(workerNodeOut))
