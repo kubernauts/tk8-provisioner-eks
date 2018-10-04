@@ -172,11 +172,20 @@ func (p EKS) Setup(args []string) {
 	log.Println("Creating Worker Nodes")
 	WorkerNodeSet := exec.Command("kubectl", "--kubeconfig", "kubeconfig", "apply", "-f", "config-map-aws-auth.yaml")
 	WorkerNodeSet.Dir = "./inventory/" + Name + "/provisioner/"
-
-	workerNodeOut, err := WorkerNodeSet.Output()
-	if err != nil {
-		log.Fatal(err)
+	stdout, _ := WorkerNodeSet.StdoutPipe()
+	WorkerNodeSet.Stderr = WorkerNodeSet.Stdout
+	error := WorkerNodeSet.Start()
+	if error != nil {
+		fmt.Println(error)
+		os.Exit(1)
 	}
+	scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		m := scanner.Text()
+		fmt.Println(m)
+	}
+	WorkerNodeSet.Wait()
+
 	fmt.Printf(string(workerNodeOut))
 
 	log.Println("Worker nodes are coming up one by one, it will take some time depending on the number of worker nodes you specified")
