@@ -121,6 +121,9 @@ func (p EKS) Setup(args []string) {
 	// Export KUBECONFIG file to the installation folder
 	log.Println("Exporting kubeconfig file to the installation folder")
 
+	exec.Command("rm", "-rf", "./inventory/"+Name+"/provisioner/kubeconfig").Run()
+	exec.Command("rm", "-rf", "./inventory/"+Name+"/provisioner/config-map-aws-auth.yaml").Run()
+
 	kubeconf := exec.Command("terraform", "output", "kubeconfig")
 	kubeconf.Dir = "./inventory/" + Name + "/provisioner/"
 
