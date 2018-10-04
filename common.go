@@ -175,7 +175,7 @@ func (p EKS) Setup(args []string) {
 
 	workerNodeOut, err := WorkerNodeSet.Output()
 	if err != nil {
-		fmt.Printf(err)
+		fmt.Println(err)
 		log.Fatal(err)
 	}
 	fmt.Printf(string(workerNodeOut))
@@ -267,7 +267,7 @@ func (p EKS) Destroy(args []string) {
 	// }
 }
 
-func NewEKS() cluster.provisioner {
+func NewEKS() cluster.Provisioner {
 	provisioner := new(EKS)
 	return provisioner
 }
