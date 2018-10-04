@@ -129,7 +129,7 @@ func (p EKS) Setup(args []string) {
 	if err != nil {
 		panic(err)
 	}
-	defer outfile.Close()
+
 	kubeconf.Stdout = outfile
 
 	err = kubeconf.Start()
@@ -137,6 +137,7 @@ func (p EKS) Setup(args []string) {
 		panic(err)
 	}
 	kubeconf.Wait()
+	outfile.Close()
 
 	log.Println("To use the kubeconfig file, do the following:")
 
@@ -154,7 +155,6 @@ func (p EKS) Setup(args []string) {
 	if err != nil {
 		panic(err)
 	}
-	defer outconf.Close()
 	confmap.Stdout = outconf
 
 	err = confmap.Start()
@@ -162,6 +162,7 @@ func (p EKS) Setup(args []string) {
 		panic(err)
 	}
 	confmap.Wait()
+	outconf.Close()
 
 	// Create Worker nodes usign the Configmap created above
 
