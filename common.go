@@ -130,7 +130,7 @@ func (p EKS) Setup(args []string) {
 		panic(err)
 	}
 	defer outfile.Close()
-	kubeconf.Stdout = &outfile
+	kubeconf.Stdout = outfile
 
 	err = kubeconf.Start()
 	if err != nil {
@@ -155,7 +155,7 @@ func (p EKS) Setup(args []string) {
 		panic(err)
 	}
 	defer outconf.Close()
-	confmap.Stdout = &outconf
+	confmap.Stdout = outconf
 
 	err = confmap.Start()
 	if err != nil {
@@ -171,6 +171,7 @@ func (p EKS) Setup(args []string) {
 
 	workerNodeOut, err := WorkerNodeSet.Output()
 	if err != nil {
+		fmt.Printf(err)
 		log.Fatal(err)
 	}
 	fmt.Printf(string(workerNodeOut))
