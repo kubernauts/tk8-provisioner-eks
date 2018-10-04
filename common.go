@@ -10,8 +10,8 @@ import (
 
 	"github.com/CrowdSurge/banner"
 	"github.com/blang/semver"
-	"github.com/kubernauts/tk8/internal/cluster"
-	"github.com/kubernauts/tk8/internal/templates"
+	"github.com/kubernauts/tk8-provisioner-eks/internal/cluster"
+	"github.com/kubernauts/tk8-provisioner-eks/internal/templates"
 )
 
 type EKS struct {
