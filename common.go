@@ -121,7 +121,7 @@ func (p EKS) Setup(args []string) {
 	// Export KUBECONFIG file to the installation folder
 	log.Println("Exporting kubeconfig file to the installation folder")
 
-	kubeconf := exec.Command("terraform", "output", "./inventory/"+Name+"/provisioner/kubeconfig")
+	kubeconf := exec.Command("terraform", "output", "kubeconfig")
 	kubeconf.Dir = "./inventory/" + Name + "/provisioner/"
 
 	// open the out file for writing
